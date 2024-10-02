@@ -1,0 +1,25 @@
+h1 {
+  font-family: 'Helvetica';
+  color: white;
+  background-color: rebeccapurple;
+}
+
+.about-text {
+  color: green;
+}
+
+.large-text {
+  font-size: 2em;
+}
+.about-section {
+  background-color: lightgray;
+}
+
+
+/* p {
+  color: green;
+} */
+
+img {
+  max-height: 150px;
+}
