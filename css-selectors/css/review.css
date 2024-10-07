@@ -66,9 +66,11 @@
 
 
 /* Q3 */
-/* p { color: grey; }
+p { color: grey; }
 #red { color: red; }
 .blue { color: blue; }
-#red .blue { color: magenta; }
+p.blue { color: lightcoral; }
 .green p { color: lightgreen; }
-div.green p.blue { color: cyan; } */
+
+/* div.green p.blue { color: cyan; } */
+/* #red .blue { color: magenta; } */
