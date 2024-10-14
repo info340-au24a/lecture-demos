@@ -33,15 +33,21 @@ nav a {
   color: white;
 }
 
+@media (min-width: 768px) {
+  nav ul {
+    justify-content: center;
+  }
+}
+
 /* main content (columns) */
 main {
-  display: flex;
+  /* display: flex; */
 }
 
 /* about section */
 .about-section {
   background-color: #f8f8f8;
-  margin-left: 1.5em;
+  /* margin-left: 1.5em; */
   flex-basis: 30%;
   order: 2;
 }
@@ -53,7 +59,7 @@ main {
 
 /* topics cards */
 .card-box {
-  display: flex;
+  /* display: flex; */
   flex-wrap: wrap;
   justify-content: space-between;
 }
@@ -70,4 +76,41 @@ main {
 /* other */
 footer {
   font-size: smaller;
+}
+
+/* if screen is at least 576 */
+@media (min-width: 576px) {
+
+  body {
+    background-color: lightpink;
+  }
+
+  .card {
+    background-color: white;
+  }
+}
+
+@media (min-width: 768px) {
+  body {
+    background-color: lightgray;
+  }
+  .card-box {
+    display: flex;
+  }
+
+  .card-box .card {
+    flex-basis: 50%;
+  }
+
+}
+
+@media (min-width: 992px) {
+
+  body {
+    background-color: goldenrod;
+  }
+
+  .card-box .card {
+    flex-basis: 33%;
+  }
 }
