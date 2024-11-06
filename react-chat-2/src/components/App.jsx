@@ -6,7 +6,7 @@ import { ChatPane } from './ChatPane.jsx';
 
 function App(props) {
 
-  const channelNames = ["general", "channel-2", "birds", "dank-memes", "random"]
+  const channelNames = ["general", "social", "channel-2", "birds", "dank-memes", "random"]
   const currentChannel = "general";
 
   return (

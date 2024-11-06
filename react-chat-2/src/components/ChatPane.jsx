@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import { ComposeForm } from './ComposeForm.jsx';
 
@@ -6,10 +6,53 @@ import INITIAL_CHAT_LOG from '../data/chat_log.json'
 
 export function ChatPane(props) {
   console.log("rendering the ChatPane")
+  const {currentChannel} = props;
+
+  const [clickCount, setClickCount] = useState(340) //assign argument to state if nothing there
+
+  const [msgStateArray, setMsgStateArray] = useState(INITIAL_CHAT_LOG); //msgs on the board
+
+  console.log(clickCount); 
+
+  const addMessage = (text) => {
+    const newMessage =     {
+      "userId": "penguin",
+      "userName": "Penguin",
+      "userImg": "/img/Penguin.png",
+      "text": text,
+      "timestamp": Date.now(),
+      "channel": "general"
+    }
+
+    //add message to array
+    const newArray = [...msgStateArray, newMessage];
+
+    //write new array to the board
+    setMsgStateArray(newArray);
+  }
+
+
+  const handleClick = (event) => {
+    console.log("you clicked me");
+
+    //update the board AND rerender the component
+    //setClickCount(clickCount+1);
+
+    addMessage("from button");
+  }
 
   //data: an array of message objects [{}, {}]
-  const messageObjArray = INITIAL_CHAT_LOG
-    .sort((m1, m2) => m1.timestamp - m2.timestamp); //chron order
+  const messageObjArray = msgStateArray
+    .sort((m1, m2) => m2.timestamp - m1.timestamp) //chron order
+    .filter((msgObj) => {
+      return msgObj.channel === currentChannel
+    })
+
+  /**WHAT DO I LOOK LIKE **/
+  if(messageObjArray.length === 0){
+    return <p>No messages found!</p>
+  }
+
 
   //views: DOM content [<MessageItem/>, <MessageItem/>]
   const messageItemArray = messageObjArray.map((chatObj) => {
@@ -22,8 +65,11 @@ export function ChatPane(props) {
       <div className="scrollable-pane">
         {/* button demo */}
         <div className="pt-2 my-2">
-          <button className="btn btn-success">Click me!</button>
-          <p>You clicked me X times</p>
+          {/* addEventListener('click', myFunction) */}
+          <button className="btn btn-success"
+                  onClick={handleClick}
+          >Click me!</button>
+          <p>You clicked me {clickCount} times</p>
         </div>
         <hr/>
 
@@ -31,7 +77,7 @@ export function ChatPane(props) {
         {messageItemArray}
       </div>
 
-      <ComposeForm />
+      <ComposeForm howToAddMessage={addMessage} />
     </>
   )
 }
