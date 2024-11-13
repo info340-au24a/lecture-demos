@@ -2,36 +2,17 @@ import React, {useState} from 'react';
 
 import { ComposeForm } from './ComposeForm.jsx';
 
-import INITIAL_CHAT_LOG from '../data/chat_log.json'
 
 export function ChatPane(props) {
   console.log("rendering chatpane")
-  const { currentChannel } = props;
+  const { currentUser, currentChannel, msgArray, addMessageFunction } = props;
 
-  const [msgStateArray, setMsgStateArray] = useState(INITIAL_CHAT_LOG); 
-  console.log(msgStateArray);
-
-  /* STATE MANAGEMENT: how do we change */
-  const addMessage = function(userObj, messageText, channel) {
-    console.log("addmsg")
-    const newMessage = {
-      "userId": userObj.userId,
-      "userName": userObj.userName,
-      "userImg": userObj.userImg,
-      "text": messageText,
-      "timestamp": Date.now(),
-      "channel": channel
-    }
-    console.log(newMessage);
-    const newArray = [...msgStateArray, newMessage];
-    setMsgStateArray(newArray); //update the board & re-render
-  }
 
   /* RENDERING: what do we look like */
 
   //Step 1. data processing
   //data: an array of message objects [{}, {}]
-  const orderedMessageArray = msgStateArray
+  const orderedMessageArray = msgArray
     .sort((m1, m2) => m2.timestamp - m1.timestamp); //reverse chron order
   //filter for only channel stuff
   const channelMessages = orderedMessageArray.filter((msgObj) => {
@@ -57,7 +38,7 @@ export function ChatPane(props) {
         {messageItemArray}
       </div>
 
-      <ComposeForm currentChannel={currentChannel} addMessageFunction={addMessage} />
+      <ComposeForm currentUser={currentUser} currentChannel={currentChannel} addMessageFunction={addMessageFunction} />
       </>
   )
 }
