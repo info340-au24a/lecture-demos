@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Link } from 'react-router-dom';
+
 export function ChannelList(props) {
   const { channelNames } = props;
 
@@ -7,12 +9,12 @@ export function ChannelList(props) {
   const liArray = channelNames.map((channelNameString) => {
     return (
       <div key={channelNameString}>
-        <a className="px-2"
+        <Link className="px-2"
           name={channelNameString}
-          href={"/"+channelNameString}
+          to={"/chat/"+channelNameString}
         >
           {channelNameString}
-        </a>
+        </Link>
       </div>
     );
   })
