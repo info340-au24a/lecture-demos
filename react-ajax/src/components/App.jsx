@@ -11,20 +11,34 @@ const EXAMPLE_DATA = [
 function App(props) {
   const [stateData, setStateData] = useState(EXAMPLE_DATA);
   //control form
-  const [queryInput, setQueryInput] = useState('');
+  const [queryInput, setQueryInput] = useState('vite');
 
   const handleChange = (event) => {
     setQueryInput(event.target.value);
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     console.log("submitting form");
 
     //do something with form input!
 
-  }
+    const url = "https://api.github.com/search/repositories"+"?q="+queryInput;
+    //console.log(url);
+    
+    fetch(url)
+      .then(function(result) {
+        return result.json() //paste the confetti
+      })
+      .then(function(data) {
+        console.log(data);
+        setStateData(data.items) //put items in state
+      })
 
+
+
+    console.log("end of the submit function")
+  }
 
   //render the data
   const dataElemArray = stateData.map((repo) => {
@@ -37,7 +51,7 @@ function App(props) {
     <div className="container">
       <header><h1>AJAX Demo</h1></header> 
 
-      <form method="GET" action="https://api.github.com/search/repositories">
+      <form method="GET" action="https://api.github.com/search/repositories" onSubmit={handleSubmit}>
         <input type="text" className="form-control mb-2" 
           name="q"
           placeholder="Search Github for..."
