@@ -2,8 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import { BrowserRouter } from 'react-router-dom'
+import { initializeApp } from "firebase/app";
 
 import App from './components/App.jsx';
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDSTJtjsBBOjOUBUu2cizOpgGukKX1P0T8",
+  authDomain: "react-chat-au24.firebaseapp.com",
+  projectId: "react-chat-au24",
+  storageBucket: "react-chat-au24.firebasestorage.app",
+  messagingSenderId: "65861974881",
+  appId: "1:65861974881:web:988d0738095336d6552320"
+};
+
+// Initialize Firebase
+initializeApp(firebaseConfig);
 
 //import CSS
 import 'bootstrap/dist/css/bootstrap.css';

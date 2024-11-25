@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 
 import { Routes, Route, Outlet, Navigate, useNavigate } from 'react-router-dom';
 
+import { getDatabase, ref, set as firebaseSet, push as firebasePush, onValue } from 'firebase/database';
+
 import { HeaderBar } from './HeaderBar.jsx';
 
 import ChatPage from './ChatPage.jsx';
@@ -12,10 +14,38 @@ import INITIAL_CHAT_LOG from '../data/chat_log.json'
 import DEFAULT_USERS from '../data/users.json';
 
 function App(props) {
-  const [messageStateArray, setMessageStateArray] = useState(INITIAL_CHAT_LOG);
+  const [messageStateArray, setMessageStateArray] = useState([]);
   const [currentUser, setCurrentUser] = useState(DEFAULT_USERS[0]) //initialize;
 
   const navigateTo = useNavigate(); //navigation hook
+
+  useEffect(() => {
+    //set up the listener for firebase
+
+    const db = getDatabase();
+    const allMessagesRef = ref(db, "allMessages")
+
+    //addEventListener('valueChange', () => {})
+    onValue(allMessagesRef, (snapshot) => {
+      console.log("database changed!");
+      const dataObj = snapshot.val();
+      console.log(dataObj);
+
+      //convert from dataObj into messageArray
+      const keyArray = Object.keys(dataObj);
+      console.log(keyArray);
+      const newMessageArray = keyArray.map((keyString) => {
+        const transformed = dataObj[keyString];
+        transformed.firebaseKey = keyString;
+        return transformed;
+      })
+      console.log(newMessageArray);
+      setMessageStateArray(newMessageArray); //update state & rerender
+
+    })
+    
+
+  }, [])
 
   //effect to run when the component first loads!
   useEffect(() => {
@@ -41,8 +71,18 @@ function App(props) {
       "timestamp": Date.now(),
       "channel": channel
     }
-    const newMessageArray = [...messageStateArray, newMessageObj];
-    setMessageStateArray(newMessageArray); //update state & rerender
+
+    //add to firebase
+    const db = getDatabase();
+    const firstNameRef = ref(db, "professor/firstName");
+    const allMsgRef = ref(db, "allMessages")
+
+    //write to the database - DO NOT UPDATE STATE
+    firebasePush(allMsgRef, newMessageObj);
+    
+    //adds to state
+    // const newMessageArray = [...messageStateArray, newMessageObj];
+    // setMessageStateArray(newMessageArray); //update state & rerender
   }
 
   return (
